@@ -1,58 +1,71 @@
 import os
 import json
-import xlrd
 import shutil
 import chardet
 import openpyxl
+import hashlib
 
 
-def mod_encoding(file: str, dst_encoding: str):
+def mod_encoding(filepath: str, dst_encoding: str) -> None:
     """修改文件编码
-    :param file: 文件路径
-    :param dst_encoding: 目标编码
+
+    Args:
+        filepath (str): 文件路径
+        dst_encoding (str): 目标编码
     """
-    src_encoding = get_encoding(file)
+    src_encoding = get_encoding(filepath)
     file_data = ""
-    with open(file, "r", encoding=src_encoding) as f:
+    with open(filepath, "r", encoding=src_encoding) as f:
         for line in f:
             file_data += line
-    with open(file, "w", encoding=dst_encoding) as f:
+    with open(filepath, "w", encoding=dst_encoding) as f:
         f.write(file_data)
 
 
-def get_encoding(file: str):
+def get_encoding(filepath: str) -> str:
     """获取文件编码
-    :param file: 文件路径
-    :return: 文件编码
+
+    Args:
+        filepath (str): 文件路径
+
+    Returns:
+        str: 文件编码
     """
-    with open(file, "rb") as fp:
+    with open(filepath, "rb") as fp:
         return chardet.detect(fp.read(1024 * 1024))["encoding"]
 
 
-def mod_str(file: str, lns: list, old_str: str, new_str: str):
-    """替换文件指定的行的字符
-    param file: 文件名
-    param lns: 行号，指定的所有行都替换
-    param old_str: 旧字符串
-    param new_str: 新字符串
+def mod_str(filepath: str, lns: list, old_str: str, new_str: str) -> None:
+    """替换文件中所有指定行的所有指定字符
+
+    Args:
+        filepath (str): 文件路径
+        lns (list): 行号，指定的所有行都替换
+        old_str (str): 旧字符串
+        new_str (str): 新字符串
     """
-    encoding = get_encoding(file)
+    encoding = get_encoding(filepath)
     file_data, ln = "", 0
-    with open(file, "r", encoding=encoding) as f:
+    with open(filepath, "r", encoding=encoding) as f:
         for line in f:
             ln += 1
             if ln in lns:
                 if old_str in line:
                     line = line.replace(old_str, new_str)
             file_data += line
-    with open(file, "w", encoding=encoding) as f:
+    with open(filepath, "w", encoding=encoding) as f:
         f.write(file_data)
 
 
-def list_dir(filepath, contains: str = None):
-    """列出目录下的所有文件
-    :param filepath: 路径
-    :param contains: 文件路径包含的字符
+def list_dir(filepath: str, contains: str = None) -> list:
+    """获取目录下的所有文件
+
+    Args:
+        filepath (str): 文件路径
+        contains (str, optional): 文件路径包含的字符. Defaults to None.
+
+    Returns:
+        list: 目录下的所有文件
     """
     res = []
     for file in os.listdir(filepath):
@@ -66,30 +79,40 @@ def list_dir(filepath, contains: str = None):
     return res
 
 
-def new_dir_ifn(dst_dir: str):
+def new_dir_ifn(filepath: str) -> None:
     """创建目录，不存在则创建，存在无操作
-    :param dst_dir: 要创建的目录
+
+    Args:
+        filepath (str): 文件路径
     """
-    if not os.path.exists(dst_dir):
-        os.makedirs(dst_dir)
+    if not os.path.exists(filepath):
+        os.makedirs(filepath)
 
 
-def del_fd(dst_dir: str):
+def del_fd(filepath: str) -> None:
     """删除文件或目录
-    :param dst_dir: 要删除的目录或文件
+
+    Args:
+        filepath (str): 文件路径
     """
-    if os.path.isdir(dst_dir):
-        shutil.rmtree(dst_dir)
-    elif os.path.isfile(dst_dir):
-        os.remove(dst_dir)
+    if os.path.isdir(filepath):
+        shutil.rmtree(filepath)
+    elif os.path.isfile(filepath):
+        os.remove(filepath)
 
 
-def file_size(filepath: str):
+def file_size(filepath: str) -> str:
     """获取文件或文件夹的大小
-    :param filepath: 路径
-    :warn: TB级别以及超过TB的数据就别用了，需要考虑性能了
+
+    Args:
+        filepath (str): 文件路径
+
+    Returns:
+        str: 文件或文件夹的大小
+    
+    Ps:
+        超过TB的数据就别用了，需要考虑性能了
     """
-    res = 0
     # 判断输入是文件夹还是文件
     if os.path.isdir(filepath):
         # 如果是文件夹则统计文件夹下所有文件的大小
@@ -115,26 +138,32 @@ def file_size(filepath: str):
     return res
 
 
-def cls_dir(filepath: str):
-    """清空文件夹下的所有文件，先删除文件夹再创建
-    :param filepath: 路径
+def cls_dir(filepath: str) -> None:
+    """清空文件夹
+
+    Args:
+        filepath (str): 文件路径
     """
     if os.path.exists(filepath):
         shutil.rmtree(filepath)
     os.mkdir(filepath)
 
 
-def from_json(filepath, k1: str = None, k2: str = None, k3: str = None):
-    """读json文件，返回字典结构数据
-    :param filepath: 路径
-    :param k1: 一级深度key
-    :param k2: 二级深度key
-    :param k3: 三级深度key
+def from_json(filepath: str, k1: str = None, k2: str = None, k3: str = None) -> any:
+    """读json文件，返回数组或字典结构数据
+
+    Args:
+        filepath (str): 文件路径
+        k1 (str, optional): 一级深度key. Defaults to None.
+        k2 (str, optional): 二级深度key. Defaults to None.
+        k3 (str, optional): 三级深度key. Defaults to None.
+
+    Returns:
+        list | dict: 返回数组或字典结构数据
     """
     with open(filepath, "r", encoding='utf-8') as fr:
         data = json.load(fr)
     data = eval(data) if type(data) is str else data
-    res = {}
     if k1:
         if k2:
             if k3:
@@ -151,7 +180,7 @@ def from_json(filepath, k1: str = None, k2: str = None, k3: str = None):
     return res
 
 
-def get_key(data: any, key: str):
+def get_key(data: any, key: str) -> any:
     """从json数据中获取指定的key
 
     Args:
@@ -170,21 +199,52 @@ def get_key(data: any, key: str):
     return res
 
 
-def to_json(filepath: str, data: dict, cn=True, encoding='utf8'):
+def to_json(filepath: str, data: any, cn=True, encoding='utf8') -> None:
     """把数据写入到json文件中
-    :param filepath: 路径
+
+    Args:
+        filepath (str): 文件路径
+        data (list | dict): 数组或字典结果数据
+        cn (bool, optional): 是否支持中文. Defaults to True.
+        encoding (str, optional): 文件编码. Defaults to 'utf8'.
     """
     json_data = json.dumps(data, ensure_ascii=not cn)
     with open(filepath, "w", encoding=encoding) as fw:
         fw.write(json_data)
 
 
-def to_xlsx(filepath: str, data: list, autoh=False, headers: list = None):
+def from_xlsx(filepath: str, sheet_name: str = 'Sheet1') -> list:
+    """从excel文件中读数据
+
+    Args:
+        filepath (str): 文件路径
+        sheet_name (str, optional): sheet名. Defaults to 'Sheet1'.
+
+    Returns:
+        list: 返回每行数据的集合
+    """
+    res = []
+    wk = openpyxl.Workbook(filepath)
+    sheet = wk[sheet_name]
+    for i in range(1, sheet.max_row + 1):
+        rows = []
+        for j in range(1, sheet.max_column + 1):
+            rows.append(sheet.cell(row=i, column=j).value)
+        res.append(rows)
+    return res
+
+
+def to_xlsx(filepath: str, data: list, sheet_name: str = None, autoh=False, headers: list = None) -> None:
     """把数据写入到excel文件中
-    :param filepath: 路径
+
+    Args:
+        filepath (str): 文件路径
+        data (list): 数组或字典结构数据
+        autoh (bool, optional): 自动添加表头，字典的key. Defaults to False.
+        headers (list, optional): 表头. Defaults to None.
     """
     wk = openpyxl.Workbook()
-    sheet = wk.active
+    sheet = wk[sheet_name] if sheet_name else wk.active
     if type(data[0]) is list:
         if headers:
             data.insert(0, headers)
@@ -202,3 +262,22 @@ def to_xlsx(filepath: str, data: list, autoh=False, headers: list = None):
             for j, k in enumerate(rc):
                 sheet.cell(row=i + 1, column=j + 1).value = rc[k]
     wk.save(filepath)
+
+
+def md5(filepath: str) -> str:
+    """获取文件的哈希值MD5
+
+    Args:
+        filepath (str): 文件路径
+
+    Returns:
+        str: 哈希值MD5
+    """
+    m = hashlib.md5()
+    with open(filepath, "rb") as fr:
+        while True:
+            data = fr.read(1024)
+            if not data:
+                break
+            m.update(data)
+    return m.hexdigest()

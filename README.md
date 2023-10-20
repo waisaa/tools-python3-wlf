@@ -8,37 +8,38 @@
 
 </div>
 
-WlfUtil provides a series of imperative functions that help deal with mysql, redis, influxdb and so on.
+pywlf provides a series of imperative functions that help deal with mysql, redis, influxdb and so on.
 
 ## Utils
-| util | func |
+| tool | desc |
 |:---------:|:---------:|
-| LogUtil | 日志打印工具类 |
-| FileUtil | 文件目录操作工具类|
-| ConfUtil | 配置文件操作工具类|
-| UniUtil | 通用工具类|
-| DtUtil | 日期操作工具类|
-| InfluxUtil | Influxdb操作工具类|
-| MysqlUtil | Mysql操作工具类|
-| ShellUtil | Shell操作工具类|
-| MinioUtil | Minio操作工具类|
-| RedisUtil | Redis操作工具类|
+| log | 日志操作工具类 |
+| file | 文件目录操作方法集合|
+| core | 通用操作方法集合|
+| date | 日期操作方法集合|
+| influxdb | Influxdb操作工具类|
+| mysql | Mysql操作工具类|
+| ssh | Shell操作工具类|
+| minio | Minio操作工具类|
+| redis | Redis操作工具类|
+| kafka | Kafka操作工具类|
+| http | Http操作工具类|
 
 ## Installation
 ```python3
-pip3 install wlfutil
+pip3 install pywlf
 ```
 
 ## Quickuse
 ```python3
-# 引入所有工具类
-#from wlfutil.all import *
-# 引入指定的
-from wlfutil.all import LogUtil, FileUtil
+# 引入日志工具类
+#from pywlf.log import LogUtil
+# 引入文件目录操作方法集合中的某个方法
+from pywlf.file import del_fd
 
-log_file = 'test/run.log'
-FileUtil.del_dir_or_file(log_file)
-LogUtil.init(log_file, True)
+log_name = 'run.log'
+del_fd(log_file)
+LogUtil.init(log_name, True)
 
 LogUtil.info('title', 'this is a test')
 ```
