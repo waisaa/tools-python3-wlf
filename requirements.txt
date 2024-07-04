@@ -7,3 +7,5 @@ redis==3.2.0
 twine==4.0.1
 wheel==0.37.1
 chardet==5.1.0
+pika==1.1.0
+# paho-mqtt==

@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(name="pywlf",
       version=VERSION,
-      keywords=["log", "file", "date", "ssh", "core", "influxdb", "mysql", "redis", "minio", "kafka", "http"],
+      keywords=["wlflog", "wlffile", "wlfdate", "wlfssh", "wlfcore", "wlfinfluxdb", "wlfmysql", "wlfredis", "wlfminio", "wlfkafka", "wlfhttp"],
       description="Common utils for python3.",
       long_description=README,
       long_description_content_type="text/markdown",

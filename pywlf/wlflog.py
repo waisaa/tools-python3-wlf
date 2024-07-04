@@ -2,10 +2,10 @@ import logging
 from logging import handlers
 from inspect import currentframe
 import colorlog
-from file import new_dir_ifn
+from pywlf.wlffile import new_dir_ifn
 
 
-class LogUtil:
+class WlfLog:
     """日志工具类"""
     logger = None
     format = '%(asctime)s %(levelname)s: %(message)s'

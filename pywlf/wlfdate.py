@@ -1,6 +1,6 @@
 import locale
 from enum import Enum
-from core import sys_type, SysType
+from pywlf.wlfcore import sys_type, SysType
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 

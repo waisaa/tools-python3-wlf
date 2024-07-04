@@ -2,7 +2,7 @@ from enum import Enum
 import platform
 import uuid
 import time
-from pydate import fsecs, start_of_day, end_of_day, shift
+from pywlf.wlfdate import fsecs, start_of_day, end_of_day, shift
 
 
 class SysType(Enum):

@@ -1,4 +1,4 @@
-from pydate import fsecs, start_of_day, end_of_day, shift
+from pywlf.wlfdate import fsecs, start_of_day, end_of_day, shift
 
 
 def date_partition(freq, start_time, end_time):
