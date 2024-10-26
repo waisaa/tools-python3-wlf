@@ -4,5 +4,5 @@ python3 changeversion.py
 echo "打包项目..."
 python3 setup.py sdist bdist_wheel
 echo "开始上传..."
-twine upload dist/*
+twine upload dist/* --config-file .pypirc
 echo "上传成功！"

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VNU = 1
+VNU = 6
 VERSION = f'0.0.{VNU}'
 README = ''
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -20,4 +20,4 @@ setup(name="pywlf",
       include_package_data=True,
       platforms="any",
       python_requires='>=3.7',
-      install_requires=['colorlog==6.6.0', 'influxdb==5.3.1', 'PyMySQL==1.0.2', 'paramiko==2.11.0', 'minio==7.1.9', 'redis==3.2.0'])
+      install_requires=['colorlog', 'chardet'])
