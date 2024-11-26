@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VNU = 6
+VNU = 8
 VERSION = f'0.0.{VNU}'
 README = ''
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -20,4 +20,4 @@ setup(name="pywlf",
       include_package_data=True,
       platforms="any",
       python_requires='>=3.7',
-      install_requires=['colorlog', 'chardet'])
+      install_requires=['colorlog', 'openpyxl', 'chardet'])

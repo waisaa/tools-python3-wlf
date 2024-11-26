@@ -28,14 +28,13 @@ class Log():
         """
         new_dir_ifn(self.log_dir)
         logfile = f'{self.log_dir}/{name}'
-        self.log = logging.getlog(logfile)
+        self.log = logging.getLogger(logfile)
         self.log.setLevel(logging.DEBUG)
         self.fmt_colored = colorlog.ColoredFormatter(f'%(log_color)s{self.format}', datefmt=None, reset=True, log_colors=self.colors)
         self.fmt_colorless = logging.Formatter(self.format)
         if console:
             self.console_handler = logging.StreamHandler()
         self.file_handler = handlers.TimedRotatingFileHandler(filename=logfile, when='D', backupCount=retention, encoding='utf-8')
-        return self.log
 
     def open(self):
         if self.log:

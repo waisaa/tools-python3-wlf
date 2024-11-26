@@ -33,13 +33,8 @@ pip3 install pywlf
 ## Quickuse
 ```python3
 # 引入日志工具类
-#from pywlf.log import LogUtil
-# 引入文件目录操作方法集合中的某个方法
-from pywlf.file import del_fd
+from pywlf.wlflog import Log
 
-log_name = 'run.log'
-del_fd(log_file)
-LogUtil.init(log_name, True)
-
-LogUtil.info('title', 'this is a test')
+log = Log('test.log')
+log.info('this is a test!')
 ```

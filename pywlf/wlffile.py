@@ -240,11 +240,12 @@ def to_xlsx(filepath: str, data: list, sheet_name: str = None, autoh=False, head
     Args:
         filepath (str): 文件路径
         data (list): 数组或字典结构数据
+        sheet_name (str, optional): sheet名. Defaults to None.
         autoh (bool, optional): 自动添加表头，字典的key. Defaults to False.
         headers (list, optional): 表头. Defaults to None.
     """
     wk = openpyxl.Workbook()
-    sheet = wk[sheet_name] if sheet_name else wk.active
+    sheet = wk.create_sheet(sheet_name) if sheet_name else wk.active
     if type(data[0]) is list:
         if headers:
             data.insert(0, headers)

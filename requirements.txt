@@ -1,4 +1,5 @@
 colorlog
+openpyxl
 chardet
 twine
 # influxdb==5.3.1
